@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Básico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        #chatbox {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            border: 1px solid #ccc;
+            background-color: white;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #userInput {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+        .message {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .userMessage {
+            text-align: right;
+            color: #2e86c1;
+        }
+        .botMessage {
+            text-align: left;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Chatbot Simples</h2>
+<div id="chatbox"></div>
+
+<input type="text" id="userInput" placeholder="Digite sua mensagem..." onkeydown="if(event.key === 'Enter'){sendMessage()}">
+<button onclick="sendMessage()">Enviar</button>
+
+<script>
+    // Função para adicionar mensagens no chatbox
+    function addMessage(text, sender) {
+        const chatbox = document.getElementById('chatbox');
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add(sender === 'user' ? 'userMessage' : 'botMessage');
+        messageElement.textContent = text;
+        chatbox.appendChild(messageElement);
+        chatbox.scrollTop = chatbox.scrollHeight; // Rolagem automática para a última mensagem
+    }
+
+    // Função para responder à mensagem do usuário
+    function getBotResponse(userMessage) {
+        const responses = {
+            "olá": "Olá, como posso ajudar você?",
+            "qual é o seu nome?": "Eu sou um chatbot simples!",
+            "tchau": "Até logo! Tenha um bom dia!",
+        };
+
+        userMessage = userMessage.toLowerCase();
+
+        return responses[userMessage] || "Desculpe, não entendi sua pergunta.";
+    }
+
+    // Função para processar a mensagem do usuário
+    function sendMessage() {
+        const userInput = document.getElementById('userInput');
+        const userMessage = userInput.value.trim();
+
+        if (userMessage === "") return;
+
+        // Exibe a mensagem do usuário
+        addMessage(userMessage, 'user');
+        userInput.value = ""; // Limpa o campo de entrada
+
+        // Resposta do bot após um delay
+        setTimeout(() => {
+            const botResponse = getBotResponse(userMessage);
+            addMessage(botResponse, 'bot');
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
